@@ -7,12 +7,10 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby '2.4.4'
-
 gem 'coffee-rails'#, '~> 4.2'
 gem 'jbuilder'#, #'~> 2.5'
 gem 'puma'#, '~> 3.7'
-gem 'rails'#, '~> 5.1.1'
+gem 'rails', '~> 5.2'
 gem 'sass-rails'#, '~> 5.0'
 gem 'sqlite3'
 gem 'turbolinks'#, '~> 5'
@@ -35,6 +33,8 @@ gem 'bootstrap', '~> 4.0.0.alpha6'
 gem 'high_voltage'
 gem 'jquery-rails'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+
+gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 
 group :development do
   gem 'better_errors'
