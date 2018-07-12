@@ -35,6 +35,7 @@ gem 'jquery-rails'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
+gem 'binding_of_caller'
 
 group :development do
   gem 'better_errors'
@@ -42,7 +43,7 @@ group :development do
   gem 'spring-commands-rspec'
 end
 group :development, :test do
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec-rails'
 end

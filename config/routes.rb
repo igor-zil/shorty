@@ -1,3 +1,6 @@
 Rails.application.routes.draw do
-  root to: 'visitors#index'
+  root to: 'links#index'
+
+  get 'about' => 'pages#about'
+  resources :links
 end

@@ -1,0 +1,11 @@
+<h1>Add Link</h1>
+<%= form_for:link, url: links_path do |l| %>
+  <p>
+    <%= l.label :original %><br>
+    <%= l.text_field(:original, {:class => 'form-control'}) %>
+  </p>
+  </p>
+  <p>
+    <%= l.submit({:class => 'btn btn-primary'}) %>
+  </p>
+<% end %>
