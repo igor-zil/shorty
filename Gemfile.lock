@@ -225,6 +225,9 @@ GEM
       tzinfo (>= 1.0.0)
     uglifier (4.1.14)
       execjs (>= 0.3.0, < 3)
+    valid_url (0.0.4)
+      addressable
+      rails
     wdm (0.1.1)
     web-console (3.6.2)
       actionview (>= 5.0)
@@ -269,6 +272,7 @@ DEPENDENCIES
   turbolinks
   tzinfo-data
   uglifier
+  valid_url
   wdm (>= 0.1.0)
   web-console
 
