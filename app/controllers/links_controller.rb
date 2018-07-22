@@ -3,7 +3,7 @@ require 'valid_url'
 class LinksController < ApplicationController
   def index
     flash[:notice] = nil
-    @links = Link.all
+    @links         = Link.all
   end
 
   def show
@@ -17,7 +17,7 @@ class LinksController < ApplicationController
   def generate_short
     #rand = SecureRandom.base64(8).gsub("/","_").gsub(/=+$/,"")
     begin
-      rand = SecureRandom.hex(10)
+      rand   = SecureRandom.hex(10)
       result = Link.find_by short: rand
     end until result.nil?
     'http://k9.com/' + rand
@@ -25,15 +25,15 @@ class LinksController < ApplicationController
 
   def create
     # render plain: params[:link].inspect
-    orgn = params[:link][:original]
+    orgn   = params[:link][:original]
     @found = Link.find_by original: orgn
     if @found
       #shrt = @found.attributes['short']
-      shrt = @found.short
+      shrt           = @found.short
       flash[:notice] = "Existing record"
       redirect_to @found
     else
-      shrt = generate_short
+      shrt  = generate_short
       @link = Link.new(original: orgn, short: shrt)
       if (@link.save)
         flash[:notice] = "Record saved"
