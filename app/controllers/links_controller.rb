@@ -20,7 +20,16 @@ class LinksController < ApplicationController
       rand   = SecureRandom.hex(10)
       result = Link.find_by short: rand
     end until result.nil?
-    'http://k9.com/' + rand
+    rand
+  end
+
+  def process_short
+    shrt = params[:short]
+    @found = Link.find_by short: shrt
+    if @found
+      orgn = @found.original
+      redirect_to orgn
+    end
   end
 
   def create
