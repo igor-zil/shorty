@@ -228,6 +228,7 @@ GEM
     valid_url (0.0.4)
       addressable
       rails
+    wdm (0.1.1)
     web-console (3.6.2)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -272,6 +273,7 @@ DEPENDENCIES
   tzinfo-data
   uglifier
   valid_url
+  wdm (>= 0.1.0)
   web-console
 
 BUNDLED WITH

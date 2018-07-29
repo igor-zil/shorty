@@ -48,6 +48,7 @@ class LinksController < ApplicationController
         flash[:notice] = "Record saved"
         redirect_to @link
       else
+        #puts @link.errors.full_messages
         flash[:error] = orgn + " is not valid URL"
         render 'new'
       end
