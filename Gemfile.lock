@@ -47,6 +47,7 @@ GEM
     arel (9.0.0)
     autoprefixer-rails (8.6.5)
       execjs
+    base62-rb (0.3.1)
     better_errors (2.4.0)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
@@ -245,6 +246,7 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
+  base62-rb
   better_errors
   binding_of_caller
   bootstrap (~> 4.0.0.alpha6)

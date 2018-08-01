@@ -16,6 +16,7 @@ gem 'turbolinks'#, '~> 5'
 gem 'uglifier'#, '>= 1.3.0'
 gem 'valid_url'
 gem 'pg'
+gem 'base62-rb'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
