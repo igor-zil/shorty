@@ -1,4 +1,3 @@
-require 'valid_url'
 require 'base62-rb'
 
 class LinksController < ApplicationController
@@ -15,73 +14,78 @@ class LinksController < ApplicationController
 
   end
 
-  def generate_short
-    #rand = SecureRandom.base64(8).gsub("/","_").gsub(/=+$/,"")
-    begin
-      rand = SecureRandom.hex(10)
-      result = Link.find_by short: rand
-    end until result.nil?
-    rand
+  def process_custom_short
+    short = params[:short]
+    @found = Link.find_by short: short
+    if @found
+      original = @found.original
+      redirect_to original
+    else
+      flash[:error] = "No record found for " + short
+      render 'new'
+    end
   end
 
   def process_short
-    shrt = params[:short]
-    @found = Link.find_by short: shrt
+    short = params[:short]
+    id = Base62.decode(short)
+    @found = Link.find_by id: id
     if @found
-      orgn = @found.original
-      redirect_to orgn
+      original = @found.original
+      redirect_to original
+    else
+      flash[:error] = "No record found for " + short
+      render 'new'
+    end
+  end
+
+  def create_new_no_short original
+    @link = Link.new(original: original)
+    if (@link.save)
+      flash[:notice] = "Record saved"
+      redirect_to @link
+    else
+      #puts @link.errors.full_messages
+      flash[:error] = "Invalid URL " + original
+      redirect_to @link
+    end
+  end
+
+  def create_new_with_short original, short
+    @found = Link.find_by short: short
+    if @found
+      flash[:notice] = "Existing short"
+      redirect_to @found
+    else
+      @link = Link.new(original: original, short: short)
+      if (@link.save)
+        flash[:notice] = "Record saved"
+        redirect_to @link
+      else
+        flash[:error] = original + " is not valid URL"
+        render 'new'
+      end
     end
   end
 
   def create
     # render plain: params[:link].inspect
-    orgn = params[:link][:original]
-    shrt = params[:link][:short]
-    @found = Link.find_by original: orgn
+    original = params[:link][:original]
+    short = params[:link][:short]
+    @found = Link.find_by original: original
     if @found
-      #shrt = @found.attributes['short']
-      shrt = @found.short
+      #short = @found.attributes['short']
       flash[:notice] = "Existing record"
-      redirect_to @found
+      return redirect_to @found
+    end
+
+    # New original URL
+    if short.blank?
+      create_new_no_short original
     else
-      # New original URL
-      if shrt.blank?
-        @link = Link.new(original: orgn)
-        if (@link.save)
-          id = @link.id
-          shrt = Base62.encode(id)
-          if @link.update(short: shrt)
-            flash[:notice] = "Record saved"
-            redirect_to @link
-          else
-            flash[:error] = orgn + " Could not update URL"
-            redirect_to @link
-          end
-        else
-          #puts @link.errors.full_messages
-          flash[:error] = orgn + " Could not save URL"
-          redirect_to @link
-        end
-      else
-        # shrt is present
-        @found = Link.find_by short: shrt
-        if @found
-          flash[:notice] = "Existing short"
-          redirect_to @found
-        else
-          @link = Link.new(original: orgn, short: shrt)
-          if (@link.save)
-            flash[:notice] = "Record saved"
-            redirect_to @link
-          else
-            flash[:error] = orgn + " is not valid URL"
-            render 'new'
-          end
-        end
-      end
+      create_new_with_short original, short
     end
   end
-
 
   private def link_params
     params.require(:link).permit(:original)
