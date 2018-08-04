@@ -1,15 +1,33 @@
 require 'rails_helper'
 RSpec.describe Link, type: :model do
-  subject { described_class.new }
+  subject {described_class.new}
+  it "uses record id encoded with no short" do
+    coded_id = '1'
+    url = 'http://www.google.com.au'
+    Link.create original: url
+    link = Link.find_by original: url
+    shrt = link.get_shorty
+    expect(shrt).to eq(coded_id)
+    expect(link.custom?).to eq("generated")
+  end
+  it "uses short when present" do
+     short  = 'PrivetTimofei'
+     url = 'http://www.google.com.au'
+     Link.create original: url, short: short
+     link = Link.find_by original: url
+     shrt = link.get_shorty
+     expect(shrt).to eq(short)
+     expect(link.custom?).to eq("custom")
+   end
   it "is not valid without original URL" do
     subject.original = ''
     subject.short = 'http://www.google.com.au'
     expect(subject).to_not be_valid
   end
-  it "is not valid without short URL" do
+  it "is valid without short URL" do
     subject.original = 'http://www.google.com.au'
     subject.short = ''
-    expect(subject).to_not be_valid
+    expect(subject).to be_valid
   end
   it "is valid with valid attributes" do
     subject.original = 'http://www.google.com.au'
@@ -21,9 +39,14 @@ RSpec.describe Link, type: :model do
     subject.short = 'http://www.google.com.au'
     expect(subject).to_not be_valid
   end
-  it "is not valid when short URL is not valid" do
+  it "is valid when short URL is null" do
     subject.original = 'http://www.google.com.au'
-    subject.short = 'Something'
-    expect(subject).to_not be_valid
+    subject.short = nil
+    expect(subject).to be_valid
+  end
+  it "is valid when short URL is not null" do
+    subject.original = 'http://www.google.com.au'
+    subject.short = "12"
+    expect(subject).to be_valid
   end
 end
