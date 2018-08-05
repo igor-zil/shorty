@@ -2,10 +2,16 @@ require 'rails_helper'
 RSpec.describe Link, type: :model do
   subject {described_class.new}
   it "uses record id encoded with no short" do
-    coded_id = '1'
-    url = 'http://www.google.com.au'
-    Link.create original: url
-    link = Link.find_by original: url
+    url = 'http://www.google.com.au/#'
+    urltemp =''
+    coded_id = 'a'
+    value = 1
+    10.times do
+      urltemp = url.gsub("#",value.to_s)
+      value+=1
+      Link.create original: urltemp
+    end
+    link = Link.find_by original: urltemp
     shrt = link.get_shorty
     expect(shrt).to eq(coded_id)
     expect(link.custom?).to eq("generated")
