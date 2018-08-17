@@ -1,6 +1,8 @@
 require 'base62-rb'
 
 class LinksController < ApplicationController
+  include ApplicationHelper
+
   def index
     flash[:notice] = nil
     @links = Link.all
@@ -11,7 +13,7 @@ class LinksController < ApplicationController
   end
 
   def new
-
+    @link = Link.new
   end
 
   def process_custom_short
@@ -43,7 +45,12 @@ class LinksController < ApplicationController
     @link = Link.new(original: original)
     if (@link.save)
       flash[:notice] = "Record saved"
-      redirect_to @link
+      @short_link = my_link_to(@link.get_shorty)
+      respond_to do |format|
+        format.html {redirect_to '/links/new'}
+        format.js # by default render links/create.js.erb
+      end
+      return
     else
       #puts @link.errors.full_messages
       flash[:error] = "Invalid URL " + original

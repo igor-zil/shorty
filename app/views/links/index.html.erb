@@ -2,7 +2,7 @@
 <% @links.each do |link| %>
 	<div class="well">
 		<h5>Original URL => <%= link.original %></h5>
-		<h5>Short&nbsp&nbsp&nbsp&nbsp&nbspURL => <%= link.get_shorty %></h5>
-    <p> Short URL <%= link.custom? %>   </p>
+    <h5><%= my_link_to(link.get_shorty) %></h5>
+    <p> Short URL <%= link.custom? %> </p>
 	</div>
 	<% end %>

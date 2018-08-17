@@ -1,13 +1,22 @@
-<h1>Add Link</h1>
-<%= form_for:link, url: links_path do |l| %>
-  <p>
-    <%= l.label :original %><br>
-    <%= l.text_field(:original, {:class => 'form-control'}) %>
-    <%= l.label :short %><br>
-    <%= l.text_field(:short, {:class => 'form-control'}) %>
-  </p>
-  </p>
-  <p>
-    <%= l.submit({:class => 'btn btn-primary'}) %>
-  </p>
+<%= form_for @link, remote: true do |l| %>
+  <table style="width:100%">
+    <tr>
+      <td><%= l.text_field(:original, {:class => 'form-control'}) %></td>
+      <td>&nbsp</td>
+      <td><%= l.submit "Short", id: "shorten" %> </td>
+    </tr>
+  </table>
 <% end %>
+<div id="shortsection">
+  <textarea rows="1" cols="45" readonly id="bar"></textarea>
+   <button class="clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#bar">
+     Copy
+   </button>
+</div>
+<script>
+$(document).ready(function(){
+  var clipboard = new Clipboard('.clipboard-btn');
+  console.log(clipboard);
+});
+</script>
+
